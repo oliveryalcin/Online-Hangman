@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link th:href="@{/styles/main.css}" rel="stylesheet"/>
+    <title>Welcome Page</title>
+</head>
+<body>
+<div align="center">
+    <form th:action="@{/game}" method="post">
+        <h1><img th:src="@{/images/hangman_welcomeheader.png}"/></h1>
+        <p>Hey there, my name is Oliver Yalcin Wells and I'm a 3rd year CompSci major</p>
+        <p>Student id: 301350814</p>
+        <p>Email: owells@sfu.ca</p>
+        <p>Rules of the game</p>
+        <button>Start Game</button>
+    </form>
+</div>
+
+</body>
+
+</html>

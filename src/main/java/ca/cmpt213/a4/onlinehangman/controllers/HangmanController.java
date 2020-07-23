@@ -26,4 +26,12 @@ public class HangmanController {
         // take the user to helloworld.html
         return "helloworld";
     }
+    @GetMapping("/welcome")
+    public void showWelcomePage(Model model) {
+        //do nothing?
+    }
+    @PostMapping("/game")
+    public void showGame(Model model){
+
+    }
 }
