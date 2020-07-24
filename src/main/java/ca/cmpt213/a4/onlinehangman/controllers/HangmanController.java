@@ -35,17 +35,19 @@ public class HangmanController {
     }
 
     @GetMapping("/welcome")
-    public void showWelcomePage(Model model) {
-        //do nothing?
+    public String showWelcomePage(Model model) {
+        return "welcome"; //this is unnecessary ?
     }
 
     @PostMapping("/game")
-    public void showGame(Model model) {
+    public String showGame(Model model) {
         //create game stuff here?
         Message message = new Message();
         Game currentGame = new Game(nextId.incrementAndGet());
         games.add(currentGame); //games array used elsewhere
+        model.addAttribute("currentGame", currentGame);
 
+        return "game";
     }
 
     @GetMapping("game/{id}")

@@ -7,7 +7,7 @@ public class Game {
     private long id;
     private Message message;
     private int numOfGuesses;
-    private int numOfCorrectGuesses;
+    private int numOfCorrectGuesses; //will use to keep track of game progress or maybe i can just compare strings idk
     private int numOfIncorrectGuesses;
     private final WordManager wordManager = WordManager.getSingleInstance();
 
@@ -51,13 +51,22 @@ public class Game {
         this.numOfIncorrectGuesses = numOfIncorrectGuesses;
     }
 
-    public int gameStatus() {
+    public int getNumOfCorrectGuesses() {
+        return numOfCorrectGuesses;
+    }
+
+    public int getNumOfGuesses() {
+        return numOfGuesses;
+    }
+
+
+    public String gameStatus() {
         if (numOfIncorrectGuesses > 6)
-            return -1; //game is lost
+            return "Lost"; //game is lost
 
         if (numOfIncorrectGuesses < 6 && numOfCorrectGuesses == message.getMessage().length())
-            return 1; // game is won
+            return "Won"; // game is won
 
-        return 0; //game is ongoing
+        return "Active"; //game is ongoing
     }
 }
