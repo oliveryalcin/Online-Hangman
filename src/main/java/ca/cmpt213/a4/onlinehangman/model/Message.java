@@ -1,5 +1,8 @@
 package ca.cmpt213.a4.onlinehangman.model;
 
+/**
+ * String wrapper class for html?
+ */
 public class Message {
     private String message;
 

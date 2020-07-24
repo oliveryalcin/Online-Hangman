@@ -43,7 +43,7 @@ public class HangmanController {
     public void showGame(Model model) {
         //create game stuff here?
         Message message = new Message();
-        Game currentGame = new Game(nextId.incrementAndGet(),message,0,0);
+        Game currentGame = new Game(nextId.incrementAndGet());
         games.add(currentGame); //games array used elsewhere
 
     }
