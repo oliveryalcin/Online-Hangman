@@ -17,14 +17,15 @@ public class Game {
         this.numOfIncorrectGuesses = 0;
         this.numOfCorrectGuesses = 0;
         this.numOfGuesses = 0;
-        setMessage();
+        initializeGameWord();
     }
 
-    private void setMessage() { //helper method
+    private void initializeGameWord() { //helper method
         Random random = new Random();
         int myRand = random.nextInt(WordManager.getNumOfWords());
         message = new Message((WordManager.getWordAt(myRand)));
         System.out.println(message.getMessage());
+        System.out.println(message.getCensoredMessage());
     }
 
     public Message getMessage() {
@@ -59,6 +60,24 @@ public class Game {
         return numOfGuesses;
     }
 
+    public void updateGameStatus(char letter){
+        if(this.message != null){
+            boolean isCorrect = false;
+            for (int i = 0; i < message.getMessageLength(); i++){
+                if(this.message.getMessage().charAt(i) == letter){
+                    if(!isCorrect){
+                        numOfCorrectGuesses++; //only want this to execute once if letter is duplicate
+                    }
+                    this.message.updateCensoredMessage(letter, i);
+                    isCorrect = true;
+                }
+            }
+            if(!isCorrect){ //if letter does not exist and answer is incorrect then this will execute
+                numOfIncorrectGuesses++;
+            }
+            numOfGuesses++;
+        }
+    }
 
     public String gameStatus() {
         if (numOfIncorrectGuesses > 6)

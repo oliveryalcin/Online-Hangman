@@ -17,6 +17,7 @@ public class HangmanController {
     private final List<Game> games = new ArrayList<>(); //later on look into making GameManager class which will encapsulate everything
     private final AtomicLong nextId = new AtomicLong();
     private Message promptMessage; //a reusable String object to display a prompt message at the screen
+    private long currentId = 0;
 
     //works like a constructor, but wait until dependency injection is done, so it's more like a setup
     @PostConstruct
@@ -40,14 +41,36 @@ public class HangmanController {
     }
 
     @PostMapping("/game")
-    public String showGame(Model model) {
+    public Model showGame(Model model) {
         //create game stuff here?
-        Message message = new Message();
-        Game currentGame = new Game(nextId.incrementAndGet());
-        games.add(currentGame); //games array used elsewhere
-        model.addAttribute("currentGame", currentGame);
+        Game currentGame = null;
+        if (currentId == 0) { //initial game check/base case
+            currentId = nextId.incrementAndGet();
+            currentGame = new Game(currentId);
+            games.add(currentGame); //games array for Database purposes
 
-        return "game";
+        }
+
+        if (games.get((int) currentId - 1).getId() == currentId) {
+            //facilitate gameplay
+            //increment currentId
+            //if game is over increment id facilitate gameplay
+            currentGame = games.get((int) currentId - 1);
+            if (currentGame.gameStatus().equals("Lost")) {
+                currentId = nextId.incrementAndGet();
+            }
+
+        }
+
+        if (games.get((int) currentId - 1).getId() != currentId) { //if the current ID of the game is different
+            //currentId = nextId.incrementAndGet();
+            currentGame = new Game(currentId);
+            games.add(currentGame); //games array for Database purposes
+
+        }
+
+        model.addAttribute("currentGame", currentGame);
+        return model;
     }
 
     @GetMapping("game/{id}")
@@ -62,9 +85,8 @@ public class HangmanController {
         throw new GameNotFound();
     }
 
-
     @ResponseStatus(value = HttpStatus.NOT_FOUND,
-            reason = "id not found")
+            reason = "No such game found")
     @ExceptionHandler(GameNotFound.class)
     public void noSuchId() {
         //do nothing? I think w8
