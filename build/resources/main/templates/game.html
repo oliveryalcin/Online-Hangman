@@ -9,17 +9,18 @@
 
 <body>
 
-<h1><span>Game </span><span th:text="${currentGame.id}"></span> <span> page</span><br/></h1>
 
 <form th:action="@{/game}" th:object="${currentGame}" method="post">
+    <h1><span>Game </span><span th:text="${currentGame.id}"></span> <span> page</span><br/></h1>
+
     <span>Status: </span> <span th:text="${currentGame.gameStatus()}"></span><br/>
     <span>Progress: </span> <span th:text="${currentGame.message.getCensoredMessage()}"></span><br/>
-    <span>You have made </span> <span
-        th:text="${currentGame.getNumOfGuesses()}"></span><span> guesses, out of which </span><span
+    <span>You have made </span>
+    <span th:text="${currentGame.getNumOfGuesses()}"></span><span> guesses, out of which </span><span
         th:text="${currentGame.getNumOfIncorrectGuesses()}"></span><span> are incorrect.</span> <br/>
 
     <label>Your guess: </label>
-    <input type="text" class="form-control" th.field="*{currentGame.mess}"/>
+    <input type="text" class="form-control" th:field="*{letter}"/>
     <button> Make a guess</button>
 </form>
 <br/>

@@ -48,6 +48,7 @@ public class Message {
 
         //if (index > this.message.length() - 1) { //error handling
         // } else {
+        System.out.println(letter + " is my input");
         this.censoredMessage[index] = letter; // e.g rewrite _ with 'a'
         //   }
     }

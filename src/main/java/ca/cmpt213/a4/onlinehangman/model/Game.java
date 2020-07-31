@@ -10,7 +10,7 @@ public class Game {
     private int numOfCorrectGuesses; //will use to keep track of game progress or maybe i can just compare strings idk
     private int numOfIncorrectGuesses;
     private final WordManager wordManager = WordManager.getSingleInstance();
-
+    private String letter;
 
     public Game(long id) { //dependency injection of the word
         this.id = id;
@@ -18,6 +18,14 @@ public class Game {
         this.numOfCorrectGuesses = 0;
         this.numOfGuesses = 0;
         initializeGameWord();
+    }
+
+    public String getLetter() {
+        return letter;
+    }
+
+    public void setLetter(String letter) {
+        this.letter = letter;
     }
 
     private void initializeGameWord() { //helper method
@@ -60,24 +68,35 @@ public class Game {
         return numOfGuesses;
     }
 
-    public void updateGameStatus(char letter){
-        if(this.message != null){
-            boolean isCorrect = false;
-            for (int i = 0; i < message.getMessageLength(); i++){
-                if(this.message.getMessage().charAt(i) == letter){
-                    if(!isCorrect){
-                        numOfCorrectGuesses++; //only want this to execute once if letter is duplicate
+    public void updateGameStatus() {
+        System.out.println(letter);
+        if (letter != null) {
+
+                System.out.println("this is letter" + letter);
+                System.out.println("game status is updated and size of letter is "+ letter.length());
+                if (this.message != null) {
+                    boolean isCorrect = false;
+                    for (int i = 0; i < message.getMessageLength(); i++) {
+                        if (this.message.getMessage().charAt(i) == letter.charAt(0)) {
+                            if (!isCorrect) {
+                                numOfCorrectGuesses++; //only want this to execute once if letter is duplicate
+                            }
+
+                            if (i != 0)
+                                this.message.updateCensoredMessage(letter.charAt(0), i - 1);
+                            else {
+                                this.message.updateCensoredMessage(letter.charAt(0), i);
+                            }
+                            isCorrect = true;
+                        }
                     }
-                    this.message.updateCensoredMessage(letter, i);
-                    isCorrect = true;
+                    if (!isCorrect) { //if letter does not exist and answer is incorrect then this will execute
+                        numOfIncorrectGuesses++;
+                    }
+                    numOfGuesses++;
                 }
             }
-            if(!isCorrect){ //if letter does not exist and answer is incorrect then this will execute
-                numOfIncorrectGuesses++;
-            }
-            numOfGuesses++;
         }
-    }
 
     public String gameStatus() {
         if (numOfIncorrectGuesses > 6)

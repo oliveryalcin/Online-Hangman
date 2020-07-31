@@ -40,11 +40,12 @@ public class HangmanController {
         return "welcome"; //this is unnecessary ?
     }
 
-    @PostMapping("/game")
-    public Model showGame(Model model) {
+    @RequestMapping(value = "/game", method = RequestMethod.POST)
+    public String showGame(Model model) {
         //create game stuff here?
         Game currentGame = null;
         if (currentId == 0) { //initial game check/base case
+
             currentId = nextId.incrementAndGet();
             currentGame = new Game(currentId);
             games.add(currentGame); //games array for Database purposes
@@ -56,21 +57,21 @@ public class HangmanController {
             //increment currentId
             //if game is over increment id facilitate gameplay
             currentGame = games.get((int) currentId - 1);
+            currentGame.updateGameStatus();
+            games.set((int) currentId - 1, currentGame);
             if (currentGame.gameStatus().equals("Lost")) {
+
                 currentId = nextId.incrementAndGet();
+                currentGame = new Game(currentId);
+                games.add(currentGame); //games array for Database purposes
+
+
+                return "gameover";
             }
-
-        }
-
-        if (games.get((int) currentId - 1).getId() != currentId) { //if the current ID of the game is different
-            //currentId = nextId.incrementAndGet();
-            currentGame = new Game(currentId);
-            games.add(currentGame); //games array for Database purposes
-
         }
 
         model.addAttribute("currentGame", currentGame);
-        return model;
+        return "game";
     }
 
     @GetMapping("game/{id}")
