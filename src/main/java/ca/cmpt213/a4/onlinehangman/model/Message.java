@@ -25,7 +25,9 @@ public class Message {
     public int getMessageLength() {
         return message.length();
     }
-
+    public int getCensoredMessageLength(){
+        return censoredMessage.length;
+    }
     public void setMessage(String message) {
         this.message = message;
         this.censoredMessage = new char[(this.message.length() * 2) - 1];

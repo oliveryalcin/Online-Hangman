@@ -1,18 +1,21 @@
 package ca.cmpt213.a4.onlinehangman.model;
 
+import java.io.Serializable;
 import java.util.Random;
 
-public class Game {
+public class Game implements Serializable {
 
+    private String guess;
     private long id;
     private Message message;
     private int numOfGuesses;
     private int numOfCorrectGuesses; //will use to keep track of game progress or maybe i can just compare strings idk
     private int numOfIncorrectGuesses;
     private final WordManager wordManager = WordManager.getSingleInstance();
-    private String letter;
+
 
     public Game(long id) { //dependency injection of the word
+
         this.id = id;
         this.numOfIncorrectGuesses = 0;
         this.numOfCorrectGuesses = 0;
@@ -20,12 +23,27 @@ public class Game {
         initializeGameWord();
     }
 
-    public String getLetter() {
-        return letter;
+    public Game(){
+        this.id = 0;
+        this.numOfIncorrectGuesses = 0;
+        this.numOfCorrectGuesses = 0;
+        this.numOfGuesses = 0;
     }
 
-    public void setLetter(String letter) {
-        this.letter = letter;
+    public String getGuess() {
+        return guess;
+    }
+
+    public void setGuess(String guess) {
+        this.guess = guess;
+    }
+
+    public void setMessage(Message message) {
+        this.message = message;
+    }
+
+    public void setNumOfCorrectGuesses(int numOfCorrectGuesses) {
+        this.numOfCorrectGuesses = numOfCorrectGuesses;
     }
 
     private void initializeGameWord() { //helper method
@@ -68,24 +86,24 @@ public class Game {
         return numOfGuesses;
     }
 
-    public void updateGameStatus() {
-        System.out.println(letter);
-        if (letter != null) {
+    public final void updateGameStatus() {
+        System.out.println(guess);
+        if (guess != null) {
 
-                System.out.println("this is letter" + letter);
-                System.out.println("game status is updated and size of letter is "+ letter.length());
+                System.out.println("this is letter" + guess);
+                System.out.println("game status is updated and size of letter is "+ guess.length());
                 if (this.message != null) {
                     boolean isCorrect = false;
                     for (int i = 0; i < message.getMessageLength(); i++) {
-                        if (this.message.getMessage().charAt(i) == letter.charAt(0)) {
+                        if (this.message.getMessage().charAt(i) == guess.charAt(0)) {
                             if (!isCorrect) {
                                 numOfCorrectGuesses++; //only want this to execute once if letter is duplicate
                             }
 
                             if (i != 0)
-                                this.message.updateCensoredMessage(letter.charAt(0), i - 1);
+                                this.message.updateCensoredMessage(guess.charAt(0), i - 1);
                             else {
-                                this.message.updateCensoredMessage(letter.charAt(0), i);
+                                this.message.updateCensoredMessage(guess.charAt(0), i);
                             }
                             isCorrect = true;
                         }
@@ -99,10 +117,10 @@ public class Game {
         }
 
     public String gameStatus() {
-        if (numOfIncorrectGuesses > 6)
+        if (numOfIncorrectGuesses > 8)
             return "Lost"; //game is lost
 
-        if (numOfIncorrectGuesses < 6 && numOfCorrectGuesses == message.getMessage().length())
+        if (numOfIncorrectGuesses < 8 && numOfCorrectGuesses == message.getMessage().length())
             return "Won"; // game is won
 
         return "Active"; //game is ongoing

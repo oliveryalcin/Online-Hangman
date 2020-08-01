@@ -1,6 +1,7 @@
 package ca.cmpt213.a4.onlinehangman.controllers;
 
 import ca.cmpt213.a4.onlinehangman.model.Game;
+import ca.cmpt213.a4.onlinehangman.model.GameManager;
 import ca.cmpt213.a4.onlinehangman.model.Message;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -8,16 +9,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
 @Controller
 public class HangmanController {
-    private final List<Game> games = new ArrayList<>(); //later on look into making GameManager class which will encapsulate everything
     private final AtomicLong nextId = new AtomicLong();
     private Message promptMessage; //a reusable String object to display a prompt message at the screen
-    private long currentId = 0;
+    private final GameManager gameManager = GameManager.getSingleInstance();
+    private int currentIndex;
+    Game currentGame;
 
     //works like a constructor, but wait until dependency injection is done, so it's more like a setup
     @PostConstruct
@@ -40,48 +40,39 @@ public class HangmanController {
         return "welcome"; //this is unnecessary ?
     }
 
-    @RequestMapping(value = "/game", method = RequestMethod.POST)
-    public String showGame(Model model) {
-        //create game stuff here?
-        Game currentGame = null;
-        if (currentId == 0) { //initial game check/base case
 
-            currentId = nextId.incrementAndGet();
-            currentGame = new Game(currentId);
-            games.add(currentGame); //games array for Database purposes
+    @GetMapping("/game")
+    public String createGame(Model model) {
+        currentIndex = (int) nextId.incrementAndGet() - 1;
+        currentGame = new Game(currentIndex + 1);
+        gameManager.add(currentGame);
+        model.addAttribute("currentGame", currentGame);
+        return "game";
+    }
 
+    @PostMapping("/game")
+    public String playGame(@ModelAttribute("guess") Game currentGame, Model model) {
+        gameManager.get(currentIndex).setGuess(currentGame.getGuess());
+        currentGame = gameManager.get(currentIndex);
+        if(!currentGame.gameStatus().equals("Active")){
+            return "gameover";
         }
-
-        if (games.get((int) currentId - 1).getId() == currentId) {
-            //facilitate gameplay
-            //increment currentId
-            //if game is over increment id facilitate gameplay
-            currentGame = games.get((int) currentId - 1);
-            currentGame.updateGameStatus();
-            games.set((int) currentId - 1, currentGame);
-            if (currentGame.gameStatus().equals("Lost")) {
-
-                currentId = nextId.incrementAndGet();
-                currentGame = new Game(currentId);
-                games.add(currentGame); //games array for Database purposes
-
-
-                return "gameover";
-            }
-        }
+        currentGame.updateGameStatus();
+        gameManager.set(currentIndex, currentGame);
 
         model.addAttribute("currentGame", currentGame);
+
         return "game";
     }
 
     @GetMapping("game/{id}")
     public void gameWithId(@PathVariable("id") Long gameId) {
-        for (Game game : games) {
-            if (game.getId() == gameId) {
-                //show you won message if win or show u lost message
-                return;
-            }
-        }
+        //for (Game game : games) {
+        //  if (game.getId() == gameId) {
+        //show you won message if win or show u lost message
+        //    return;
+        // }
+        //}
 
         throw new GameNotFound();
     }
