@@ -43,6 +43,7 @@ public class HangmanController {
 
     @GetMapping("/game")
     public String createGame(Model model) {
+
         currentIndex = (int) nextId.incrementAndGet() - 1;
         currentGame = new Game(currentIndex + 1);
         gameManager.add(currentGame);
@@ -52,11 +53,13 @@ public class HangmanController {
 
     @PostMapping("/game")
     public String playGame(@ModelAttribute("guess") Game currentGame, Model model) {
+
         gameManager.get(currentIndex).setGuess(currentGame.getGuess());
         currentGame = gameManager.get(currentIndex);
         currentGame.updateGameStatus();
         gameManager.set(currentIndex, currentGame);
         model.addAttribute("currentGame", currentGame);
+
         if (!currentGame.gameStatus().equals("Active")) {
             return "gameover";
         }
@@ -65,13 +68,13 @@ public class HangmanController {
     }
 
     @GetMapping("game/{id}")
-    public void gameWithId(@PathVariable("id") Long gameId) {
-        //for (Game game : games) {
-        //  if (game.getId() == gameId) {
-        //show you won message if win or show u lost message
-        //    return;
-        // }
-        //}
+    public String gameWithId(@PathVariable("id") Long gameId) {
+        for (Game game : gameManager) {
+            if (game.getId() == gameId) {
+                //show you won message if win or show u lost message
+                return "game";
+            }
+        }
 
         throw new GameNotFound();
     }

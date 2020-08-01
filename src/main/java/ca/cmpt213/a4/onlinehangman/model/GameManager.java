@@ -1,12 +1,13 @@
 package ca.cmpt213.a4.onlinehangman.model;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
  * Acts as a database for Game objects
  */
-public class GameManager {
+public class GameManager implements Iterable<Game>{
 
     private static List<Game> games;
     private static GameManager single_instance;
@@ -35,4 +36,8 @@ public class GameManager {
     }
 
 
+    @Override
+    public Iterator<Game> iterator() {
+        return games.iterator();
+    }
 }

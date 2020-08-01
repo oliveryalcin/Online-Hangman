@@ -6,6 +6,7 @@ import java.util.Random;
 public class Game implements Serializable {
 
     private String guess;
+    private String guessHistory;
     private long id;
     private Message message;
     private int numOfGuesses;
@@ -93,36 +94,33 @@ public class Game implements Serializable {
             System.out.println("game status is updated and size of letter is " + guess.length());
             boolean isCorrect = true;
             boolean isFalse = true;
-            if (this.message != null) {
-                for (int i = 0; i < message.getMessageLength(); i++) {
-                    for (int j = 0; j < message.getCensoredMessageLength(); j++) {
-                        if (message.getMessage().charAt(i) == guess.charAt(0)) {
-                            if (isCorrect) { //use a string to double check if char was used previously
-                                numOfGuesses++;
-                                isCorrect = false; //to stop from inner loop increasing numOfGuesses for multiple occurences
-                                isFalse = false;
 
-                            }
+            for (int i = 0; i < message.getMessageLength(); i++) {
+                for (int j = 0; j < message.getCensoredMessageLength(); j++) {
+                    if (message.getMessage().charAt(i) == guess.charAt(0)) {
+                        if (isCorrect) { //use a string to double check if char was used previously
+                            numOfGuesses++;
+                            isCorrect = false; //to stop from inner loop increasing numOfGuesses for multiple occurences
+                            isFalse = false;
 
-                            if (j == i * 2) {
-                                message.updateCensoredMessage(guess.charAt(0), j);
-                            }
-
-
+                        }
+                        if (j == i * 2) {
+                            message.updateCensoredMessage(guess.charAt(0), j);
                         }
                     }
                 }
-                if (isFalse) {
-                    numOfIncorrectGuesses++;
-                }
-
+            }
+            if (isFalse) {
+                numOfIncorrectGuesses++;
             }
         }
     }
 
 
     public String gameStatus() {
+
         String censoredMessage = message.getCensoredMessage().replaceAll("\\s", "");
+
         if (numOfIncorrectGuesses > 7)
             return "Lost"; //game is lost
 

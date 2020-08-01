@@ -33,7 +33,6 @@ public class Message {
         this.censoredMessage = new char[(this.message.length() * 2) - 1];
         for (int i = 0; i < (this.message.length() * 2) - 1; i++) {
 
-
             if (i % 2 == 0)
                 censoredMessage[i] = '_';
 
