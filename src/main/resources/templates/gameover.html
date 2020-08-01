@@ -1,10 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <link th:href="@{/styles/main.css}" rel="stylesheet"/>
+    <title>CMPT 213 Online Hangman Game</title>
 </head>
+
+
 <body>
 
+<h1><span>Game </span><span th:text="${currentGame.id}"></span> <span> page</span><br/></h1>
+
+<span>Status: </span> <span th:text="${currentGame.gameStatus()}"></span><br/>
+<span>Progress: </span> <span th:text="${currentGame.message.getMessage()}"></span><br/>
+<span>You have made </span>
+<span th:text="${currentGame.getNumOfGuesses()}"></span><span> guesses, out of which </span><span
+        th:text="${currentGame.getNumOfIncorrectGuesses()}"></span><span> are incorrect.</span> <br/>
+
+<br/>
+<a href="/welcome">Back to welcome page</a>
 </body>
+
 </html>

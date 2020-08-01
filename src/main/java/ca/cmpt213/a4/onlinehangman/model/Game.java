@@ -23,7 +23,7 @@ public class Game implements Serializable {
         initializeGameWord();
     }
 
-    public Game(){
+    public Game() {
         this.id = 0;
         this.numOfIncorrectGuesses = 0;
         this.numOfCorrectGuesses = 0;
@@ -89,38 +89,44 @@ public class Game implements Serializable {
     public final void updateGameStatus() {
         System.out.println(guess);
         if (guess != null) {
+            System.out.println("this is letter" + guess);
+            System.out.println("game status is updated and size of letter is " + guess.length());
+            boolean isCorrect = true;
+            boolean isFalse = true;
+            if (this.message != null) {
+                for (int i = 0; i < message.getMessageLength(); i++) {
+                    for (int j = 0; j < message.getCensoredMessageLength(); j++) {
+                        if (message.getMessage().charAt(i) == guess.charAt(0)) {
+                            if (isCorrect) { //use a string to double check if char was used previously
+                                numOfGuesses++;
+                                isCorrect = false; //to stop from inner loop increasing numOfGuesses for multiple occurences
+                                isFalse = false;
 
-                System.out.println("this is letter" + guess);
-                System.out.println("game status is updated and size of letter is "+ guess.length());
-                if (this.message != null) {
-                    boolean isCorrect = false;
-                    for (int i = 0; i < message.getMessageLength(); i++) {
-                        if (this.message.getMessage().charAt(i) == guess.charAt(0)) {
-                            if (!isCorrect) {
-                                numOfCorrectGuesses++; //only want this to execute once if letter is duplicate
                             }
 
-                            if (i != 0)
-                                this.message.updateCensoredMessage(guess.charAt(0), i - 1);
-                            else {
-                                this.message.updateCensoredMessage(guess.charAt(0), i);
+                            if (j == i * 2) {
+                                message.updateCensoredMessage(guess.charAt(0), j);
                             }
-                            isCorrect = true;
+
+
                         }
                     }
-                    if (!isCorrect) { //if letter does not exist and answer is incorrect then this will execute
-                        numOfIncorrectGuesses++;
-                    }
-                    numOfGuesses++;
                 }
+                if (isFalse) {
+                    numOfIncorrectGuesses++;
+                }
+
             }
         }
+    }
+
 
     public String gameStatus() {
-        if (numOfIncorrectGuesses > 8)
+        String censoredMessage = message.getCensoredMessage().replaceAll("\\s", "");
+        if (numOfIncorrectGuesses > 7)
             return "Lost"; //game is lost
 
-        if (numOfIncorrectGuesses < 8 && numOfCorrectGuesses == message.getMessage().length())
+        if (censoredMessage.equals(message.getMessage()))
             return "Won"; // game is won
 
         return "Active"; //game is ongoing

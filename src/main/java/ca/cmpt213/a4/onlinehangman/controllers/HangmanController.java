@@ -54,13 +54,12 @@ public class HangmanController {
     public String playGame(@ModelAttribute("guess") Game currentGame, Model model) {
         gameManager.get(currentIndex).setGuess(currentGame.getGuess());
         currentGame = gameManager.get(currentIndex);
-        if(!currentGame.gameStatus().equals("Active")){
-            return "gameover";
-        }
         currentGame.updateGameStatus();
         gameManager.set(currentIndex, currentGame);
-
         model.addAttribute("currentGame", currentGame);
+        if (!currentGame.gameStatus().equals("Active")) {
+            return "gameover";
+        }
 
         return "game";
     }
