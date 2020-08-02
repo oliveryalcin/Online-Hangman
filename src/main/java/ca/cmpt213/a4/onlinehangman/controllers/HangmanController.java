@@ -68,11 +68,16 @@ public class HangmanController {
     }
 
     @GetMapping("game/{id}")
-    public String gameWithId(@PathVariable("id") Long gameId) {
+    public String gameWithId(@PathVariable("id") Long gameId, Model model) {
         for (Game game : gameManager) {
             if (game.getId() == gameId) {
                 //show you won message if win or show u lost message
-                return "game";
+                model.addAttribute("currentGame", game);
+                if (game.gameStatus().equals("Active"))
+                    return "game";
+                else {
+                    return "gameover";
+                }
             }
         }
 

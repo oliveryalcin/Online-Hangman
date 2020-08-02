@@ -6,6 +6,9 @@ import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Reads in the words used to play the game from the commonWords.txt file
+ */
 public class WordManager {
     private static WordManager single_instance;
     private static List<String> words;

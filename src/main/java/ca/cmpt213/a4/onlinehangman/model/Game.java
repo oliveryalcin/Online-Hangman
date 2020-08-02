@@ -3,10 +3,13 @@ package ca.cmpt213.a4.onlinehangman.model;
 import java.io.Serializable;
 import java.util.Random;
 
+/**
+ * Is the accumilation of most of the computational logic of the game
+ */
 public class Game implements Serializable {
 
     private String guess;
-    private String guessHistory;
+    private StringBuilder guessHistory;
     private long id;
     private Message message;
     private int numOfGuesses;
@@ -21,6 +24,7 @@ public class Game implements Serializable {
         this.numOfIncorrectGuesses = 0;
         this.numOfCorrectGuesses = 0;
         this.numOfGuesses = 0;
+        this.guessHistory = new StringBuilder();
         initializeGameWord();
     }
 
@@ -29,6 +33,15 @@ public class Game implements Serializable {
         this.numOfIncorrectGuesses = 0;
         this.numOfCorrectGuesses = 0;
         this.numOfGuesses = 0;
+        this.guessHistory = new StringBuilder();
+    }
+
+    public StringBuilder getGuessHistory() {
+        return guessHistory;
+    }
+
+    public void setGuessHistory(StringBuilder guessHistory) {
+        this.guessHistory = guessHistory;
     }
 
     public String getGuess() {
@@ -95,14 +108,26 @@ public class Game implements Serializable {
             boolean isCorrect = true;
             boolean isFalse = true;
 
+            for (int h = 0; h < guessHistory.length(); h++) { //sole purpose is to make the algorithm smoother
+                if (guess.charAt(0) == guessHistory.toString().charAt(h)) {
+                    return; //nothing to update, dont append identical letters
+                }
+            }
             for (int i = 0; i < message.getMessageLength(); i++) {
                 for (int j = 0; j < message.getCensoredMessageLength(); j++) {
                     if (message.getMessage().charAt(i) == guess.charAt(0)) {
+                        for (int k = 0; k < guessHistory.length(); k++) {
+                            if (guessHistory.toString().charAt(k) == guess.charAt(0)) {
+                                isCorrect = false;
+                                isFalse = false;
+                                break;
+                            }
+                        }
                         if (isCorrect) { //use a string to double check if char was used previously
                             numOfGuesses++;
                             isCorrect = false; //to stop from inner loop increasing numOfGuesses for multiple occurences
                             isFalse = false;
-
+                            guessHistory.append(guess);
                         }
                         if (j == i * 2) {
                             message.updateCensoredMessage(guess.charAt(0), j);
