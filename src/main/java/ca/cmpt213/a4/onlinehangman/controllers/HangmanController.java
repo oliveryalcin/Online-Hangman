@@ -16,8 +16,6 @@ public class HangmanController {
     private final AtomicLong nextId = new AtomicLong();
     private Message promptMessage; //a reusable String object to display a prompt message at the screen
     private final GameManager gameManager = GameManager.getSingleInstance();
-    private int currentIndex;
-    Game currentGame;
 
     //works like a constructor, but wait until dependency injection is done, so it's more like a setup
     @PostConstruct
@@ -44,8 +42,8 @@ public class HangmanController {
     @GetMapping("/game")
     public String createGame(Model model) {
 
-        currentIndex = (int) nextId.incrementAndGet() - 1;
-        currentGame = new Game(currentIndex + 1);
+        int currentGameIndex = (int) nextId.incrementAndGet() - 1;
+        Game currentGame = new Game(currentGameIndex + 1);
         gameManager.add(currentGame);
         model.addAttribute("currentGame", currentGame);
         return "game";
@@ -53,11 +51,11 @@ public class HangmanController {
 
     @PostMapping("/game")
     public String playGame(@ModelAttribute("guess") Game currentGame, Model model) {
-
-        gameManager.get(currentIndex).setGuess(currentGame.getGuess());
-        currentGame = gameManager.get(currentIndex);
+        int currentGameIndex = (int)currentGame.getId()-1;
+        gameManager.get(currentGameIndex).setGuess(currentGame.getGuess());
+        currentGame = gameManager.get(currentGameIndex);
         currentGame.updateGameStatus();
-        gameManager.set(currentIndex, currentGame);
+        gameManager.set(currentGameIndex, currentGame);
         model.addAttribute("currentGame", currentGame);
 
         if (!currentGame.gameStatus().equals("Active")) {
@@ -73,8 +71,9 @@ public class HangmanController {
             if (game.getId() == gameId) {
                 //show you won message if win or show u lost message
                 model.addAttribute("currentGame", game);
-                if (game.gameStatus().equals("Active"))
+                if (game.gameStatus().equals("Active")) {
                     return "game";
+                }
                 else {
                     return "gameover";
                 }
@@ -87,7 +86,7 @@ public class HangmanController {
     @ResponseStatus(value = HttpStatus.NOT_FOUND,
             reason = "No such game found")
     @ExceptionHandler(GameNotFound.class)
-    public void noSuchId() {
-        //do nothing? I think w8
+    public String noSuchId() {
+        return "gamenotfound";
     }
 }
