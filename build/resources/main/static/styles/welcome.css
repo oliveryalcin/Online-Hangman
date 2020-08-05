@@ -1,5 +1,6 @@
 html {
     font-family: sans-serif;
+    font-size: large;
 }
 body {
    background-image: url("/images/main_menu_background.jpg");
@@ -9,5 +10,5 @@ body {
    background-size: cover;
 }
 div {
-  font-size: 20px;
+  font-size: large;
 }

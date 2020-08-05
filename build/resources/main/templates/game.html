@@ -6,24 +6,28 @@
     <title>CMPT 213 Online Hangman Game</title>
 </head>
 
-<div align = "center">
-<h1><span>Game </span><span th:text="${currentGame.id}"></span> <span> page</span><br/></h1>
+<div align="right">
+    <span th:utext="${currentGame.toString()}"></span>
+</div>
 
-<span>Status: </span> <span th:text="${currentGame.gameStatus()}"></span><br/>
-<span><img th:src="@{/images/progress.png}" width="125" height="35" alt="Progress: "/></span> <span
+<div align="center">
+    <h1><span>Game </span><span th:text="${currentGame.id}"></span> <span> page</span><br/></h1>
+
+    <span>Status: </span> <span th:text="${currentGame.gameStatus()}"></span><br/>
+    <span><img th:src="@{/images/progress.png}" width="125" height="35" alt="Progress: "/></span> <span
         th:text="${currentGame.message.getCensoredMessage()}"></span><br/>
-<span>You have made </span>
-<span th:text="${currentGame.getNumOfGuesses()}"></span><span> guesses, out of which </span><span
+    <span>You have made </span>
+    <span th:text="${currentGame.getNumOfGuesses()}"></span><span> guesses, out of which </span><span
         th:text="${currentGame.getNumOfIncorrectGuesses()}"></span><span> are incorrect.</span> <br/>
 
-<form action="#" th:action="@{/game}" th:object="${currentGame}" method="post">
-    <label>Your guess: </label>
-    <input type="hidden" th:field="*{id}" th:value="${currentGame.id}">
-    <input type="text" maxlength="1" class="form-control" th:field="*{guess}"
-           oninput="this.value = this.value.replace(/[^a-z]/, '')" required>
-    <button type="submit"> Make a guess</button>
-</form>
-<br/>
-<a href="/welcome">Back to welcome page</a>
+    <form action="#" th:action="@{/game}" th:object="${currentGame}" method="post">
+        <label>Your guess: </label>
+        <input type="hidden" th:field="*{id}" th:value="${currentGame.id}">
+        <input type="text" maxlength="1" class="form-control" th:field="*{guess}"
+               oninput="this.value = this.value.replace(/[^a-z]/, '')" required>
+        <button type="submit"> Make a guess</button>
+    </form>
+    <br/>
+    <a href="/welcome">Back to welcome page</a>
 </div>
 </html>
