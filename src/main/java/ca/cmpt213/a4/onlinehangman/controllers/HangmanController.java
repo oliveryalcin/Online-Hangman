@@ -39,24 +39,23 @@ public class HangmanController {
     }
 
 
-    @GetMapping("/game")
-    public String createGame(Model model) {
-
-        int currentGameIndex = (int) nextId.incrementAndGet() - 1;
-        Game currentGame = new Game(currentGameIndex + 1);
-        gameManager.add(currentGame);
-        model.addAttribute("currentGame", currentGame);
-        return "game";
-    }
-
     @PostMapping("/game")
     public String playGame(@ModelAttribute("guess") Game currentGame, Model model) {
-        int currentGameIndex = (int)currentGame.getId()-1;
-        gameManager.get(currentGameIndex).setGuess(currentGame.getGuess());
-        currentGame = gameManager.get(currentGameIndex);
-        currentGame.updateGameStatus();
-        gameManager.set(currentGameIndex, currentGame);
-        model.addAttribute("currentGame", currentGame);
+
+        if (currentGame.getGuess() == null) { //its a new game no guesses have yet been made
+            int currentIndex = (int) nextId.incrementAndGet() - 1;
+            Game newGame = new Game(currentIndex + 1);
+            gameManager.add(newGame);
+            model.addAttribute("currentGame", newGame);
+            return "game";
+        } else {
+            int currentGameIndex = (int) currentGame.getId() - 1;
+            gameManager.get(currentGameIndex).setGuess(currentGame.getGuess());
+            currentGame = gameManager.get(currentGameIndex);
+            currentGame.updateGameStatus();
+            gameManager.set(currentGameIndex, currentGame);
+            model.addAttribute("currentGame", currentGame);
+        }
 
         if (!currentGame.gameStatus().equals("Active")) {
             return "gameover";
@@ -73,20 +72,21 @@ public class HangmanController {
                 model.addAttribute("currentGame", game);
                 if (game.gameStatus().equals("Active")) {
                     return "game";
-                }
-                else {
+                } else {
                     return "gameover";
                 }
             }
         }
 
-        throw new GameNotFound();
+        throw new GameNotFound("Game not found");
     }
-
+/*
     @ResponseStatus(value = HttpStatus.NOT_FOUND,
             reason = "No such game found")
     @ExceptionHandler(GameNotFound.class)
     public String noSuchId() {
         return "gamenotfound";
     }
+
+ */
 }
