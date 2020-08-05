@@ -7,7 +7,7 @@ import java.util.List;
 /**
  * Acts as a database for Game objects
  */
-public class GameManager implements Iterable<Game>{
+public class GameManager implements Iterable<Game> {
 
     private static List<Game> games;
     private static GameManager single_instance;
@@ -31,7 +31,8 @@ public class GameManager implements Iterable<Game>{
     public void set(int index, Game game) {
         games.set(index, game);
     }
-    public void add(Game game){
+
+    public void add(Game game) {
         games.add(game);
     }
 
