@@ -1,5 +1,43 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<style>
+input[type=text] {
+  width: 30px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+
+}
+
+.button {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 14px;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+  outline: none;
+  color: #fff;
+  background-color: #5e6266;
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 9px #999;
+}
+
+.button:hover {
+  background-color: #3c3e42
+}
+
+.button:active {
+  background-color: #3c3e42
+  box-shadow: 0 3px #666;
+  transform: translateY(2px);
+}
+
+
+</style>
+
+
 <head>
     <meta charset="UTF-8">
     <link th:href="@{/styles/main.css}" rel="stylesheet"/>
@@ -7,7 +45,7 @@
 </head>
 
 <div align="center">
-    <h1 style="color:red;">Game <span style="color:red;font-size:55px;" th:text="${currentGame.id}"></span>
+    <h1 style="color:#68102A;">Game <span style="color:#68102A;font-size:55px;" th:text="${currentGame.id}"></span>
         page <br/></h1>
 
     <span style="color:black;"><b>Status: </b> </span> <span th:text="${currentGame.gameStatus()}"></span><br/><br/>
@@ -15,7 +53,7 @@
         th:text="${currentGame.message.getCensoredMessage()}"></span><br/><br/>
     <span>You have made </span>
     <span th:text="${currentGame.getNumOfGuesses()}"></span><span> guesses, out of which </span>
-    <span style="color:red;"
+    <span style="color:#68102A;"
           th:text="${currentGame.getNumOfIncorrectGuesses()}"></span><span> are incorrect.</span>
     <br/><br/>
 
@@ -24,7 +62,7 @@
         <input type="hidden" th:field="*{id}" th:value="${currentGame.id}">
         <input type="text" maxlength="1" class="form-control" th:field="*{guess}"
                oninput="this.value = this.value.replace(/[^a-z]/, '')" required>
-        <button type="submit"> Make a guess</button>
+        <button type="submit" class="button"> Make a guess</button>
     </form>
     <br/><br/>
     <a href="/welcome">Back to welcome page</a>
