@@ -80,13 +80,4 @@ public class HangmanController {
 
         throw new GameNotFound("Game not found");
     }
-/*
-    @ResponseStatus(value = HttpStatus.NOT_FOUND,
-            reason = "No such game found")
-    @ExceptionHandler(GameNotFound.class)
-    public String noSuchId() {
-        return "gamenotfound";
-    }
-
- */
 }

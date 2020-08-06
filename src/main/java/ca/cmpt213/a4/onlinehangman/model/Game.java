@@ -125,6 +125,7 @@ public class Game implements Serializable {
                         }
                         if (isCorrect) { //use a string to double check if char was used previously
                             numOfGuesses++;
+                            numOfCorrectGuesses++;
                             isCorrect = false; //to stop from inner loop increasing numOfGuesses for multiple occurences
                             isFalse = false;
                             guessHistory.append(guess);
@@ -137,6 +138,7 @@ public class Game implements Serializable {
             }
             if (isFalse) {
                 numOfIncorrectGuesses++;
+                numOfGuesses++;
             }
         }
     }
@@ -146,7 +148,7 @@ public class Game implements Serializable {
 
         String censoredMessage = message.getCensoredMessage().replaceAll("\\s", "");
 
-        if (numOfIncorrectGuesses > 7)
+        if (numOfIncorrectGuesses > 6)
             return "Lost"; //game is lost
 
         if (censoredMessage.equals(message.getMessage()))

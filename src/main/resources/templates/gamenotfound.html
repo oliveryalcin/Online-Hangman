@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <link th:href="@{/styles/main.css}" rel="stylesheet"/>
+    <link th:href="@{/styles/error.css}" rel="stylesheet"/>
     <title>CMPT 213 Online Hangman Game</title>
 </head>
 <body>
@@ -11,7 +11,9 @@
 
     <p><img th:src="@{/images/no_game_found.png}" width="580" height="60"></p>
 
-    <p><img th:src="@{/images/sad_mascot.png}"/></p>
+    <p><img th:src="@{/images/sad_mascot.png}" width="400" height="300"/></p>
+
+    <a href="/welcome">Back to welcome page</a>
 </div>
 
 </body>
