@@ -6,8 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Singleton class which reads in the words used to play the game from the commonWords.txt file.
- *
+ * Singleton class which reads in the words from the commonWords.txt file and aids in initializing Games.
  * Student id: 301350814
  * Email: owells@sfu.ca
  */
@@ -19,7 +18,7 @@ public class WordReader {
         //read words into string
         words = new ArrayList<>();
         try {
-            String file ="src/commonWords.txt";
+            String file = "src/commonWords.txt";
             BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
             String line;
             while ((line = bufferedReader.readLine()) != null) {

@@ -5,8 +5,7 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Acts as a database for Game objects and encapsulates some functionalities
- *
+ * Acts as a database for Game objects and encapsulates some functionalities of how the database works.
  * Student id: 301350814
  * Email: owells@sfu.ca
  */

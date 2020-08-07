@@ -1,8 +1,8 @@
 package ca.cmpt213.a4.onlinehangman.model;
 
 /**
- * Word class used to update, store and initialize the word that is being used in the Hangman Game
- *
+ * Word class used to update, store and initialize the word that is being guessed and the censored version of the word
+ * used in the Game.
  * Student id: 301350814
  * Email: owells@sfu.ca
  */

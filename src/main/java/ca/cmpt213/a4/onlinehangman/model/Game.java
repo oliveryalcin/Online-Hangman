@@ -4,9 +4,8 @@ import java.io.Serializable;
 import java.util.Random;
 
 /**
- * Model class where in which an individual and unique is Game instance is created and is the class where in which
- * the gameplay logic is implemented to facilitate gameplay.
- * <p>
+ * Model class where in which an individual Game instance is created and is the class where in which
+ * the gameplay and game logic is implemented to facilitate gameplay.
  * Student id: 301350814
  * Email: owells@sfu.ca
  */
@@ -108,10 +107,9 @@ public class Game implements Serializable {
     }
 
     public final void updateGameStatus() {
-        System.out.println(guess);
+        System.out.println(guess); //for cheating :)
         if (guess != null && (gameStatus().equals("Active"))) {
-            System.out.println("this is letter" + guess);
-            System.out.println("game status is updated and size of letter is " + guess.length());
+
             boolean isCorrect = true;
             boolean isFalse = true;
 
