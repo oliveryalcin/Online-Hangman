@@ -6,7 +6,7 @@ import java.util.Random;
 /**
  * Model class where in which an individual and unique is Game instance is created and is the class where in which
  * the gameplay logic is implemented to facilitate gameplay.
- *
+ * <p>
  * Student id: 301350814
  * Email: owells@sfu.ca
  */
@@ -159,13 +159,10 @@ public class Game implements Serializable {
         if (numOfIncorrectGuesses > 7) {
             gameStatus = "Lost";
             return gameStatus; //game is lost
-        }
-
-        else if (censoredMessage.equals(word.getWord())) {
+        } else if (censoredMessage.equals(word.getWord())) {
             gameStatus = "Won";
             return gameStatus; // game is won
-        }
-        else if (!(gameStatus.equals("Lost") || gameStatus.equals("Won"))) { //this stops cheating
+        } else if (!(gameStatus.equals("Lost") || gameStatus.equals("Won"))) { //this stops cheating
             gameStatus = "Active";
         }
 
