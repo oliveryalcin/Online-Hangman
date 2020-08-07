@@ -1,6 +1,7 @@
 html {
     font-family: sans-serif;
-    font-size: large;
+    font-size: 20px;
+    color = black;
 }
 body {
    background-image: url("/images/main_menu_background.jpg");
@@ -8,7 +9,4 @@ body {
    background-repeat: no-repeat;
    background-attachment: fixed;
    background-size: cover;
-}
-div {
-  font-size: large;
 }

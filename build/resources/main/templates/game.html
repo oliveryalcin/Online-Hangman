@@ -60,8 +60,8 @@ input[type=text] {
     <form action="#" th:action="@{/game}" th:object="${currentGame}" method="post">
         <label style="color:black;"><b>Your guess: </b></label>
         <input type="hidden" th:field="*{id}" th:value="${currentGame.id}">
-        <input type="text" maxlength="1" class="form-control" th:field="*{guess}"
-               oninput="this.value = this.value.replace(/[^a-z]/, '')" required>
+        <input style="text-align:center;" type="text" maxlength="1" class="form-control" th:field="*{guess}"
+               oninput="this.value = this.value.replace(/[^a-z]/, '')" required >
         <button type="submit" class="button"> Make a guess</button>
     </form>
     <br/><br/>

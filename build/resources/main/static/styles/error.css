@@ -14,19 +14,19 @@ div {
 }
 
 a:link {
-  color: pink;
+  color: #e75480;
   background-color: transparent;
   text-decoration: none;
 }
 
 a:visited {
-  color: pink;
+  color: #e75480;
   background-color: transparent;
   text-decoration: none;
 }
 
 a:hover {
-  color: red;
+  color: #68102A;
   background-color: transparent;
   text-decoration: underline;
 }
