@@ -5,7 +5,6 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 /**
  * Main class which runs the SpringBoot application.
- *
  * Student id: 301350814
  * Email: owells@sfu.ca
  */
