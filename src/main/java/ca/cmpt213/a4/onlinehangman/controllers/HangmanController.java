@@ -2,32 +2,38 @@ package ca.cmpt213.a4.onlinehangman.controllers;
 
 import ca.cmpt213.a4.onlinehangman.model.Game;
 import ca.cmpt213.a4.onlinehangman.model.GameManager;
-import ca.cmpt213.a4.onlinehangman.model.Message;
+import ca.cmpt213.a4.onlinehangman.model.Word;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.PostConstruct;
 import java.util.concurrent.atomic.AtomicLong;
 
+/**
+ * Hangman Controller class used to interact and set up the mapping with the html pages and instantiate gameplay.
+ * Student id: 301350814
+ * Email: owells@sfu.ca
+ */
 @Controller
 public class HangmanController {
     private final AtomicLong nextId = new AtomicLong();
-    private Message promptMessage; //a reusable String object to display a prompt message at the screen
+    private Word promptWord; //a reusable String object to display a prompt message at the screen
     private final GameManager gameManager = GameManager.getSingleInstance();
 
     //works like a constructor, but wait until dependency injection is done, so it's more like a setup
     @PostConstruct
     public void hangmanControllerInit() {
-        promptMessage = new Message("Initializing...");
+        promptWord = new Word("Initializing...");
     }
 
     @GetMapping("/helloworld")
     public String showHelloworldPage(Model model) {
 
-        promptMessage.setMessage("You are at the helloworld page!");
-        model.addAttribute("promptMessage", promptMessage);
+        promptWord.setWord("You are at the helloworld page!");
+        model.addAttribute("promptMessage", promptWord);
 
         // take the user to helloworld.html
         return "helloworld";
@@ -79,5 +85,11 @@ public class HangmanController {
         }
 
         throw new GameNotFound("Game not found");
+    }
+
+    @ResponseStatus(HttpStatus.NOT_FOUND)  // 404
+    @ExceptionHandler(GameNotFound.class)
+    public ModelAndView handleNoHandlerFoundException() {
+        return new ModelAndView("gamenotfound");
     }
 }

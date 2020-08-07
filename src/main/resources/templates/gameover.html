@@ -9,11 +9,11 @@
 
 <div align="center">
     <h1 style="color:#68102A;">Game <span style="color:#68102A;font-size:55px;" th:text="${currentGame.id}"></span>
-        page <br/></h1>
+        is Over <br/></h1>
 
     <span style="color:black;"><b>Status: </b> </span> <span th:text="${currentGame.gameStatus()}"></span><br/><br/>
-    <span style="color:black;"><b>Progress: </b></span> <span
-        th:text="${currentGame.message.getMessage()}"></span><br/><br/>
+    <span style="color:black;"><b>Word: </b></span> <span
+        th:text="${currentGame.word.getWord()}"></span><br/><br/>
     <span>You have made </span>
     <span th:text="${currentGame.getNumOfGuesses()}"></span><span> guesses, out of which </span>
     <span style="color:#68102A;"

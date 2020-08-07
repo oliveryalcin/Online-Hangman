@@ -4,18 +4,23 @@ import java.io.Serializable;
 import java.util.Random;
 
 /**
- * Is the accumilation of most of the computational logic of the game
+ * Model class where in which an individual and unique is Game instance is created and is the class where in which
+ * the gameplay logic is implemented to facilitate gameplay.
+ *
+ * Student id: 301350814
+ * Email: owells@sfu.ca
  */
 public class Game implements Serializable {
 
     private String guess;
     private StringBuilder guessHistory;
     private long id;
-    private Message message;
+    private Word word;
     private int numOfGuesses;
     private int numOfCorrectGuesses; //will use to keep track of game progress or maybe i can just compare strings idk
     private int numOfIncorrectGuesses;
-    private final WordManager wordManager = WordManager.getSingleInstance();
+    private final WordReader wordReader = WordReader.getSingleInstance();
+    private String gameStatus;
 
 
     public Game(long id) { //dependency injection of the word
@@ -25,15 +30,17 @@ public class Game implements Serializable {
         this.numOfCorrectGuesses = 0;
         this.numOfGuesses = 0;
         this.guessHistory = new StringBuilder();
-        initializeGameWord();
+        this.gameStatus = "Active";
+        initializeGameWord(); //
     }
 
-    public Game() {
+    public Game() { //dont want to initialize game word here as it is redundant because this Game is a throwaway template
         this.id = 0;
         this.numOfIncorrectGuesses = 0;
         this.numOfCorrectGuesses = 0;
         this.numOfGuesses = 0;
         this.guessHistory = new StringBuilder();
+        this.gameStatus = "Active";
     }
 
     public StringBuilder getGuessHistory() {
@@ -52,8 +59,8 @@ public class Game implements Serializable {
         this.guess = guess;
     }
 
-    public void setMessage(Message message) {
-        this.message = message;
+    public void setWord(Word word) {
+        this.word = word;
     }
 
     public void setNumOfCorrectGuesses(int numOfCorrectGuesses) {
@@ -62,14 +69,14 @@ public class Game implements Serializable {
 
     private void initializeGameWord() { //helper method
         Random random = new Random();
-        int myRand = random.nextInt(WordManager.getNumOfWords());
-        message = new Message((WordManager.getWordAt(myRand)));
-        System.out.println(message.getMessage());
-        System.out.println(message.getCensoredMessage());
+        int myRand = random.nextInt(WordReader.getNumOfWords());
+        word = new Word((WordReader.getWordAt(myRand)));
+        System.out.println(word.getWord());
+        System.out.println(word.getCensoredWord());
     }
 
-    public Message getMessage() {
-        return message;
+    public Word getWord() {
+        return word;
     }
 
     public long getId() {
@@ -102,20 +109,21 @@ public class Game implements Serializable {
 
     public final void updateGameStatus() {
         System.out.println(guess);
-        if (guess != null) {
+        if (guess != null && (gameStatus().equals("Active"))) {
             System.out.println("this is letter" + guess);
             System.out.println("game status is updated and size of letter is " + guess.length());
             boolean isCorrect = true;
             boolean isFalse = true;
 
-            for (int h = 0; h < guessHistory.length(); h++) { //sole purpose is to make the algorithm smoother
+            for (int h = 0; h < guessHistory.length(); h++) { //sole purpose is to make the algorithm smoother and check for duplicates
                 if (guess.charAt(0) == guessHistory.toString().charAt(h)) {
-                    return; //nothing to update, dont append identical letters
+                    numOfGuesses++;
+                    return; //nothing to update, dont append identical letters will affect performance badly if I did so.
                 }
             }
-            for (int i = 0; i < message.getMessageLength(); i++) {
-                for (int j = 0; j < message.getCensoredMessageLength(); j++) {
-                    if (message.getMessage().charAt(i) == guess.charAt(0)) {
+            for (int i = 0; i < word.getWordLength(); i++) {
+                for (int j = 0; j < word.getCensoredWordLength(); j++) {
+                    if (word.getWord().charAt(i) == guess.charAt(0)) {
                         for (int k = 0; k < guessHistory.length(); k++) {
                             if (guessHistory.toString().charAt(k) == guess.charAt(0)) {
                                 isCorrect = false;
@@ -131,7 +139,7 @@ public class Game implements Serializable {
                             guessHistory.append(guess);
                         }
                         if (j == i * 2) {
-                            message.updateCensoredMessage(guess.charAt(0), j);
+                            word.updateCensoredWord(guess.charAt(0), j);
                         }
                     }
                 }
@@ -146,15 +154,22 @@ public class Game implements Serializable {
 
     public String gameStatus() {
 
-        String censoredMessage = message.getCensoredMessage().replaceAll("\\s", "");
+        String censoredMessage = word.getCensoredWord().replaceAll("\\s", "");
 
-        if (numOfIncorrectGuesses > 6)
-            return "Lost"; //game is lost
+        if (numOfIncorrectGuesses > 7) {
+            gameStatus = "Lost";
+            return gameStatus; //game is lost
+        }
 
-        if (censoredMessage.equals(message.getMessage()))
-            return "Won"; // game is won
+        else if (censoredMessage.equals(word.getWord())) {
+            gameStatus = "Won";
+            return gameStatus; // game is won
+        }
+        else if (!(gameStatus.equals("Lost") || gameStatus.equals("Won"))) { //this stops cheating
+            gameStatus = "Active";
+        }
 
-        return "Active"; //game is ongoing
+        return gameStatus; //game is ongoing
     }
 
 }

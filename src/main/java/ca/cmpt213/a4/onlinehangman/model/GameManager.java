@@ -5,7 +5,10 @@ import java.util.Iterator;
 import java.util.List;
 
 /**
- * Acts as a database for Game objects
+ * Acts as a database for Game objects and encapsulates some functionalities
+ *
+ * Student id: 301350814
+ * Email: owells@sfu.ca
  */
 public class GameManager implements Iterable<Game> {
 

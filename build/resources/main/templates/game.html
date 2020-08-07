@@ -50,7 +50,7 @@ input[type=text] {
 
     <span style="color:black;"><b>Status: </b> </span> <span th:text="${currentGame.gameStatus()}"></span><br/><br/>
     <span style="color:black;"><b>Progress: </b></span> <span
-        th:text="${currentGame.message.getCensoredMessage()}"></span><br/><br/>
+        th:text="${currentGame.word.getCensoredWord()}"></span><br/><br/>
     <span>You have made </span>
     <span th:text="${currentGame.getNumOfGuesses()}"></span><span> guesses, out of which </span>
     <span style="color:#68102A;"
